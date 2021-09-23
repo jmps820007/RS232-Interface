@@ -269,7 +269,7 @@ namespace RS232_Interface
             }));
         }
 
-        private void btnCleanData_Click(object sender, EventArgs e)
+        private void btnCleanData_Click(object sender, EventArgs e)     //清除數據
         {
             tbxReceiveData.Text = "";
             tbxSendData.Text = "";
