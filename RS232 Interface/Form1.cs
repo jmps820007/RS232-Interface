@@ -151,6 +151,7 @@ namespace RS232_Interface
             else
             { sp.Parity = Parity.None; }
 
+            //Control.CheckForIllegalCrossThreadCalls = false;
             //定義Data Received 事件，當連接埠收到數據後觸發事件
             sp.DataReceived += new SerialDataReceivedEventHandler(sp_DataReceived);
             if (rdbHex.Checked)
@@ -216,6 +217,12 @@ namespace RS232_Interface
 
         private void btnSend_Click(object sender, EventArgs e)      //發送數據
         {
+            if (CheckSendData() == false)
+            {
+                MessageBox.Show("請輸入數據");
+                return;
+            }
+
             if(isOpen == true)      //數據寫入通訊埠
             {
                 try
@@ -239,17 +246,17 @@ namespace RS232_Interface
 
         private void sp_DataReceived(object sender, SerialDataReceivedEventArgs e)      //接收數據
         {
-            System.Threading.Thread.Sleep(100);     //延時100ms 等待接收數據完成
+            System.Threading.Thread.Sleep(100);   //延時100ms 等待接收數據完成
             //多執行緒無法直接調用介面控制元件(由主執行緒建立)會導致衝突，使用invoke跨執行緒使用 UI(主執行緒)修改其狀態
-            this.Invoke((EventHandler)(delegate     
+            try
             {
-                if (isHex == true)
+                if (isHex == false)
                 {
                     System.Text.UTF8Encoding utf8 = new System.Text.UTF8Encoding();
                     Byte[] readBytes = new Byte[sp.BytesToRead];
                     sp.Read(readBytes, 0, readBytes.Length);
                     String decodedString = utf8.GetString(readBytes);
-                    tbxReceiveData.Text += decodedString;
+                    SetText(decodedString + " ");
                 }
                 else
                 {
@@ -257,17 +264,35 @@ namespace RS232_Interface
                     sp.Read(ReceivedData, 0, ReceivedData.Length);
                     string RecvDataText = null;
                     string s = string.Empty;
-                    for(int i = 0;i < ReceivedData.Length; i++)
+                    for (int i = 0; i < ReceivedData.Length; i++)
                     {
                         RecvDataText += (ReceivedData[i].ToString("X2") + " ");
                         s += (char)ReceivedData[i];
                     }
-                    tbxReceiveData.Text += RecvDataText;
+                    SetText(RecvDataText + " ");
                     RecvDataTextL = s;
                 }
-                sp.DiscardInBuffer();
-            }));
+            }
+            catch (Exception)
+            {
+
+            }
         }
+
+        delegate void SetTextCallback(string text);
+        private void SetText(string text)
+        {
+            if(this.tbxReceiveData.InvokeRequired)
+            {
+                SetTextCallback d = new SetTextCallback(SetText);
+                this.Invoke(d, new object[] { text });
+            }
+            else
+            {
+                this.tbxReceiveData.Text += text;
+            }
+        }
+
 
         private void btnCleanData_Click(object sender, EventArgs e)     //清除數據
         {

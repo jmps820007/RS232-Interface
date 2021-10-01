@@ -33,7 +33,6 @@ namespace RS232_Interface
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.rdbChar = new System.Windows.Forms.RadioButton();
             this.rdbHex = new System.Windows.Forms.RadioButton();
-            this.button3 = new System.Windows.Forms.Button();
             this.btnOpenCom = new System.Windows.Forms.Button();
             this.btnCheckCom = new System.Windows.Forms.Button();
             this.cbxDataBits = new System.Windows.Forms.ComboBox();
@@ -63,7 +62,6 @@ namespace RS232_Interface
             this.groupBox1.Controls.Add(this.textBox9);
             this.groupBox1.Controls.Add(this.rdbChar);
             this.groupBox1.Controls.Add(this.rdbHex);
-            this.groupBox1.Controls.Add(this.button3);
             this.groupBox1.Controls.Add(this.btnOpenCom);
             this.groupBox1.Controls.Add(this.btnCheckCom);
             this.groupBox1.Controls.Add(this.cbxDataBits);
@@ -114,15 +112,6 @@ namespace RS232_Interface
             this.rdbHex.TabIndex = 13;
             this.rdbHex.Text = "HEX";
             this.rdbHex.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(464, 99);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(81, 27);
-            this.button3.TabIndex = 12;
-            this.button3.Text = "開始";
-            this.button3.UseVisualStyleBackColor = true;
             // 
             // btnOpenCom
             // 
@@ -344,7 +333,6 @@ namespace RS232_Interface
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button btnOpenCom;
         private System.Windows.Forms.Button btnCheckCom;
         private System.Windows.Forms.ComboBox cbxDataBits;
